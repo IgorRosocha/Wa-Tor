@@ -1,0 +1,5 @@
+Cython
+numpy
+pytest
+pytest-timeout
+PyQt5
