@@ -18,24 +18,16 @@ SVG_WATER = QtSvg.QSvgRenderer(WATER_PATH)
 VALUE_ROLE = QtCore.Qt.UserRole
 
 
-def pixels_to_logical(x, y):
-    return y // CELL_SIZE, x // CELL_SIZE
-
-
-def logical_to_pixels(row, column):
-    return column * CELL_SIZE, row * CELL_SIZE
-
-
 class GridWidget(QtWidgets.QWidget):
     def __init__(self, array, energy):
         super().__init__()
         self.array = array
         self.energy = energy
-        size = logical_to_pixels(*array.shape)
+        self.CELL_SIZE = 32
+        size = self.logical_to_pixels(*array.shape)
         self.setMinimumSize(*size)
         self.setMaximumSize(*size)
         self.resize(*size)
-        self.CELL_SIZE = 32
 
     def mousePressEvent(self, event):
         row, column = self.pixels_to_logical(event.x(), event.y())
@@ -124,7 +116,7 @@ def new_dialog(window, grid):
     grid.array = wator.creatures
     grid.energy = wator.energies
 
-    size = logical_to_pixels(width, height)
+    size = GridWidget.logical_to_pixels(grid, width, height)
     grid.setMinimumSize(*size)
     grid.setMaximumSize(*size)
     grid.resize(*size)
@@ -155,7 +147,7 @@ def load(grid):
     grid.array = wator.creatures
     grid.energy = wator.energies
 
-    size = logical_to_pixels(grid.array.shape[0], grid.array.shape[1])
+    size = GridWidget.logical_to_pixels(grid.array.shape[0], grid.array.shape[1])
     grid.setMinimumSize(*size)
     grid.setMaximumSize(*size)
     grid.resize(*size)
